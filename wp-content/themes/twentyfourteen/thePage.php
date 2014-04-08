@@ -18,6 +18,7 @@ $monthAndDay = [];
 $divCount = 0;
 
 query_posts( 'posts_per_page=-1');
+$totalBlocksToShow = 10;
 
 
 
@@ -28,7 +29,7 @@ endwhile;
 
 $month = array_unique($month);
 $monthAndDay = multi_unique($monthAndDay);
-$monthAndDay = array_slice($monthAndDay, 0, 10);
+$monthAndDay = array_slice($monthAndDay, 0, $totalBlocksToShow);
 
 	foreach ($month as $val) {
 		$stringToShow = '';
@@ -64,7 +65,7 @@ endwhile;
 wp_reset_query();
 $divCount = 0;
 for ($i=0; $i < (count($allPosts)); $i++) {		
-if ($divCount == 10) break;					
+if ($divCount == $totalBlocksToShow) break;					
 	$similarDate = []; 														
 	array_push($similarDate, $allPosts[$i]);
 
