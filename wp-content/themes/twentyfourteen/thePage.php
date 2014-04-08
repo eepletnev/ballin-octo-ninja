@@ -4,12 +4,21 @@
 Template Name: ballin-ninja
 */
 
-
-query_posts( 'posts_per_page=8' );
-
+ function multi_unique($array) {
+        foreach ($array as $k=>$na)
+            $new[$k] = serialize($na);
+        $uniq = array_unique($new);
+        foreach($uniq as $k=>$ser)
+            $new1[$k] = unserialize($ser);
+        return ($new1);
+    }
 
       $month = [];
 $monthAndDay = [];
+
+
+query_posts( 'posts_per_page=8' );
+
 
 
 while ( have_posts() ) : the_post();
@@ -18,6 +27,8 @@ while ( have_posts() ) : the_post();
 endwhile;
 
 $month = array_unique($month);
+
+$monthAndDay = multi_unique($monthAndDay);
 
 
 
