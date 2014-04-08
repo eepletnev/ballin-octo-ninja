@@ -15,17 +15,32 @@ Template Name: ballin-ninja
 
       $month = [];
 $monthAndDay = [];
-$divCount = 0;
+   $onePost  = [];
+   $allPosts = [];
+   $divCount = 0;
 
 query_posts( 'posts_per_page=-1');
 $totalBlocksToShow = 10;
 
 
-
 while ( have_posts() ) : the_post();
 		array_push($month, get_the_time('M'));
 		array_push($monthAndDay, array(get_the_time('M'), get_the_time('d')));
+
+	$onePost['title']   = get_the_title();
+	$onePost['content'] = get_the_content();
+	$onePost['date'] = array('day'   => get_the_date('d'), 
+							 'month' => get_the_date('m'),
+							 'year'  => get_the_date('Y'));
+	$onePost['excerpt'] = get_the_excerpt();
+	$image_id = get_post_thumbnail_id(); 
+	$image_url = wp_get_attachment_image_src($image_id,array(320,250), true);  
+	$onePost['thumb'] = $image_url[0];
+	array_push($allPosts, $onePost);
 endwhile;
+
+
+wp_reset_query();
 
 $month = array_unique($month);
 $monthAndDay = multi_unique($monthAndDay);
@@ -43,26 +58,6 @@ $monthAndDay = array_slice($monthAndDay, 0, $totalBlocksToShow);
 		if ($flag) echo $val . ": " . $stringToShow; 
 	}
 
-$onePost  = [];
-$allPosts = [];
-
-while ( have_posts() ) : the_post();
-
-$onePost['title']   = get_the_title();
-$onePost['content'] = get_the_content();
-$onePost['date'] = array('day'   => get_the_date('d'), 
-						 'month' => get_the_date('m'),
-						 'year'  => get_the_date('Y'));
-$onePost['excerpt'] = get_the_excerpt();
-$image_id = get_post_thumbnail_id(); 
-$image_url = wp_get_attachment_image_src($image_id,array(320,250), true);  
-$onePost['thumb'] = $image_url[0];
-array_push($allPosts, $onePost);
-endwhile;
-
-
-
-wp_reset_query();
 $divCount = 0;
 for ($i=0; $i < (count($allPosts)); $i++) {		
 if ($divCount == $totalBlocksToShow) break;					
@@ -79,11 +74,6 @@ if ($divCount == $totalBlocksToShow) break;
 	}
     $divCount++;
 ?>
-
-
-
-
-
 
 <!-- Вывод блоков -->
 
